@@ -1,0 +1,18 @@
+PAC-MAN
+=======
+
+Start:     ./pac-man config.json      (keep the _internal folder next to it)
+
+Controls:  Arrows / WASD   move
+           P / Esc         pause (Resume / Main Menu)
+           Enter           select in menus
+
+Rules:     Eat every pacgum to clear the level (10 levels).
+           Big pacgums in the corners make ghosts edible for 7 seconds.
+           Touching a normal ghost costs a life. Time up also costs a life.
+
+Cheats:    C toggles cheat mode, then:
+           I invincible, F freeze ghosts, V speed, L extra life, N skip level
+
+Config:    Edit config.json (lives, points, seed, level time, maze sizes).
+Scores:    Top 10 are saved in highscores.json.

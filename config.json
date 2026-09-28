@@ -1,0 +1,33 @@
+# Pac-Man configuration. Lines starting with '#' or '//' are comments.
+# Missing or invalid values fall back to defaults (see README).
+{
+    "highscore_filename": "highscores.json",
+    # Starting lives
+    "lives": 3,
+    # Maximum number of pacgums per level
+    "pacgum": 100,
+    "points_per_pacgum": 10,
+    "points_per_super_pacgum": 50,
+    "points_per_ghost": 200,
+    # Seed of the first level (0 = random). Next levels are always random.
+    "seed": 42,
+    # Seconds per level
+    "level_max_time": 120,
+    // Seconds ghosts stay blue after a super-pacgum
+    "frightened_duration": 7,
+    // Seconds before an eaten ghost comes back to its corner
+    "ghost_respawn_time": 5,
+    # Maze size of each level (7 to 50 cells)
+    "levels": [
+        {"width": 15, "height": 11},
+        {"width": 16, "height": 11},
+        {"width": 17, "height": 12},
+        {"width": 18, "height": 12},
+        {"width": 19, "height": 13},
+        {"width": 20, "height": 13},
+        {"width": 21, "height": 14},
+        {"width": 22, "height": 14},
+        {"width": 23, "height": 15},
+        {"width": 24, "height": 15}
+    ]
+}
