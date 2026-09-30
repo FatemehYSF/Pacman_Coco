@@ -11,7 +11,7 @@ def main() -> int:
     os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "1"
     try:
         from pacman.config import load_config
-        from pacman.ui import App
+        from pacman.ui.app import App
         App(load_config(sys.argv[1])).run()
     except ImportError as error:
         print(f"Error: missing module '{error.name}'. Run 'make install'.")

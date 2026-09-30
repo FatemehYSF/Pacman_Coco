@@ -1,6 +1,6 @@
 # Diagrams
 
-## 1. Screens (states of `App` in `ui.py`)
+## 1. Screens (`App.state`, changed by the keys in `ui/keys.py`)
 
 ```mermaid
 stateDiagram-v2
@@ -23,12 +23,12 @@ stateDiagram-v2
 
 ```mermaid
 flowchart TD
-    A[clock.tick 60 FPS -> dt] --> B[read keyboard events]
+    A[clock.tick 60 FPS -> dt] --> B[each key: keys.on_key]
     B --> C{state == play?}
     C -- yes --> D[game.update dt]
     D --> E{game.over?}
     E -- yes --> F[state = name]
-    E -- no --> G[draw current screen]
+    E -- no --> G[screens.draw_screen]
     C -- no --> G
     F --> G
     G --> H{state == quit?}
@@ -56,16 +56,37 @@ flowchart TD
 ```mermaid
 flowchart LR
     main[pac-man.py] --> config[config.py]
-    main --> ui[ui.py]
-    ui --> game[game.py]
-    ui --> highscores[highscores.py]
+    main --> app[ui/app.py]
+    app --> keys[ui/keys.py]
+    app --> screens[ui/screens.py]
+    app --> game[game.py]
+    app --> highscores[highscores.py]
+    app --> drawing
+    keys --> screens
+    keys --> highscores
+    screens --> drawing[ui/drawing.py]
+    drawing --> game
     game --> maze[maze.py]
     game --> entities[entities.py]
     entities --> maze
     maze --> gen[(mazegenerator package)]
 ```
 
-## 5. Ghost AI (`Ghost.choose_direction`)
+## 5. UI files: who calls what each frame
+
+```mermaid
+flowchart TD
+    run[app.py: App.run] -->|key press| on_key[keys.py: on_key]
+    on_key --> keyfns[navigate / play_key / name_key]
+    run -->|playing| update[game.py: Game.update]
+    run -->|every frame| draw_screen[screens.py: draw_screen]
+    draw_screen --> scr[draw_menu / draw_hud / draw_end / text / menu]
+    draw_screen --> board[drawing.py: draw_board]
+    board --> shapes[draw_pacman / draw_ghost]
+    scr --> shapes
+```
+
+## 6. Ghost AI (`Ghost.choose_direction`)
 
 ```mermaid
 flowchart TD

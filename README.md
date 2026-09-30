@@ -1,4 +1,4 @@
-*This project has been created as part of the 42 curriculum by <fyousefi> and <ayafshar>.*
+*This project has been created as part of the 42 curriculum by fyousefi, ayafshar.*
 
 # Pac-Man
 
@@ -39,10 +39,10 @@ main menu.
 
 ## Configuration
 
-`config.json` is JSON where lines starting with `#` or `//` are comments. Unknown keys
-are ignored. Missing or invalid values print a `[config]` message and use the
-default; numbers out of range are clamped. An unreadable or broken file means
-all defaults.
+`config.json` is JSON where lines starting with `#` or `//` are comments.
+Unknown keys are ignored. Missing or invalid values print a `[config]` message
+and use the default; numbers out of range are clamped. An unreadable or broken
+file means all defaults.
 
 | Key | Default | Range / meaning |
 | --- | --- | --- |
@@ -96,35 +96,69 @@ game), never as a traceback.
 - All screens are states of one loop (`menu`, `highscores`, `instructions`,
   `play`, `pause`, `name`, `quit`).
 
+## User Interface
+
+Everything is drawn with pygame shapes (circles, rectangles, lines), no image
+files. The code is in `pacman/ui/`.
+
+| Screen | What it shows |
+| --- | --- |
+| Main menu | Start Game, Highscores, Instructions, Exit; top 3 scores; a small Pac-Man chase animation |
+| Highscores | the top 10 names and scores |
+| Instructions | controls, rules and cheat keys |
+| Game | the maze and a HUD: score, lives (Pac-Man icons), level, cheats, time (red under 10 s) |
+| Pause | Resume / Main Menu over the darkened game |
+| Game over / Victory | final score (and a congratulation message) + name input |
+
+- Menus: Up/Down (or W/S) move the cursor, Enter selects.
+- Smooth movement: the rules move characters one cell at a time, but each one
+  remembers its previous cell (`prev`). The drawing slides it between `prev`
+  and `cell` using `clock / step` (0 = just left, 1 = arrived).
+- Simple animations use the time since start (`ticks()`): Pac-Man's mouth
+  opens with `sin`, big pacgums blink, blue ghosts flash white in their last
+  2 seconds, the name cursor blinks.
+
 ## General Software Architecture
 
 ```
 pac-man.py            entry point: checks argv, catches every error
-pacman/config.py      load_config(): JSON + # comments -> validated dict
+pacman/config.py      load_config(): JSON + # or // comments -> valid dict
 pacman/highscores.py  load_scores / add_score / save_scores
 pacman/maze.py        Maze: wraps MazeGenerator, walls, can_move, center, corners
 pacman/entities.py    Player, Ghost (Ghost.choose_direction = AI)
 pacman/game.py        Game: levels, pacgums, score, lives, timers, cheats
-pacman/ui.py          App: pygame window, key handling, drawing of every screen
+pacman/ui/app.py      App: window, main loop, start a game
+pacman/ui/keys.py     on_key: what each key does on each screen
+pacman/ui/screens.py  draw_screen: every screen, the HUD and the menus
+pacman/ui/drawing.py  colours, draw_pacman, draw_ghost, draw_board
 ```
 
 `App` owns the config, the highscores and the current `Game`. `Game` owns a
-`Maze`, a `Player` and 4 `Ghost`s. Only `ui.py` imports pygame, so the game
-rules can be tested without a window.
+`Maze`, a `Player` and 4 `Ghost`s.
+
+Each frame, `App.run` gives every key press to `keys.on_key(app, event)`,
+updates the game, then calls `screens.draw_screen(app)`. `draw_screen` draws
+the text screens itself and uses `drawing.py` for the shapes (Pac-Man, ghosts,
+maze). The functions in `keys.py` and `screens.py` take `app` as their first
+argument to read and change `app.state`, `app.choice`, `app.name`...; they
+import `App` only for type hints (`if TYPE_CHECKING:`), which avoids a
+circular import.
+
+Only the files in `pacman/ui/` import pygame, so the game rules can be tested
+without a window.
 
 ## Packaging
 
-`make package` runs `package.sh`: PyInstaller builds a standalone folder (`pac-man` + `_internal/`),
-then it is zipped with `config.json`, `highscores.json` and `PLAY.txt`
-(in-package instructions) into `dist/pac-man-<os>.zip`, ready to upload to
-Itch.io as an unlisted build.
+`make package` runs `package.sh`: PyInstaller builds a standalone folder
+(`pac-man` + `_internal/`), then it is zipped with `config.json`,
+`highscores.json` and `PLAY.txt` (in-package instructions) into
+`dist/pac-man-<os>.zip`, ready to upload to Itch.io as an unlisted build.
 
 ## Project Management
 
 See [project_management/](project_management/): `plan.md` (timeline, choices,
 risks, acceptance tests) and `diagrams.md` (screens, game loop, modules, ghost
 AI).
-Team meeting guide (run, test, structure, work division): `Fatemeh_Ayda.md`.
 
 ## Resources
 

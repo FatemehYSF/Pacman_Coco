@@ -162,3 +162,32 @@ Do NOT write overly complex code.
 ============================================================
 BEGIN.
 ============================================================
+Analyze ui.py and split it into a few logical files while preserving 100% of the current behavior.
+
+The goal is easier code review and navigation.
+
+CRITICAL:
+- Do not redesign the architecture.
+- Do not change functionality.
+- Do not optimize.
+- Do not introduce patterns.
+- Do not make the code more clever.
+- Do not add new features.
+- Do not create more files than necessary.
+
+Favor the simplest possible solution.
+
+A file with 120 lines is perfectly acceptable.
+A file with 80 lines is perfectly acceptable.
+
+Do not split code just for the sake of splitting it.
+
+Before generating code:
+1. Analyze the current file.
+2. Explain the logical sections.
+3. Propose the smallest reasonable file structure.
+4. Explain why each split improves readability.
+5. Generate the refactored code.
+
+The result should look like code written by a student who values clarity and simplicity,
+not a software architect building a large framework.
