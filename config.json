@@ -1,4 +1,4 @@
-# Pac-Man configuration. Lines starting with '#' or '//' are comments.
+# Pac-Man configuration. Lines starting with '#' are comments ('//' also works).
 # Missing or invalid values fall back to defaults (see README).
 {
     "highscore_filename": "highscores.json",
@@ -13,9 +13,9 @@
     "seed": 42,
     # Seconds per level
     "level_max_time": 120,
-    // Seconds ghosts stay blue after a super-pacgum
+    # Seconds ghosts stay blue after a super-pacgum
     "frightened_duration": 7,
-    // Seconds before an eaten ghost comes back to its corner
+    # Seconds before an eaten ghost comes back to its corner
     "ghost_respawn_time": 5,
     # Maze size of each level (7 to 50 cells)
     "levels": [

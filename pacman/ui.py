@@ -39,7 +39,7 @@ INSTRUCTIONS = [
 
 def ticks() -> float:
     """Seconds since pygame started (used for simple animations)."""
-    return pygame.time.get_ticks() / 1000
+    return float(pygame.time.get_ticks()) / 1000
 
 
 def draw_pacman(screen: pygame.Surface, pos: tuple[float, float],

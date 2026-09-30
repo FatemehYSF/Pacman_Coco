@@ -60,11 +60,12 @@ def get_int(data: dict[str, Any], key: str, default: int,
     if isinstance(value, bool) or not isinstance(value, int):
         warn(f"invalid '{where}{key}' ({value!r}), using default {default}")
         return default
-    if not low <= value <= high:
-        clamped = min(max(value, low), high)
+    number: int = value
+    if not low <= number <= high:
+        clamped = min(max(number, low), high)
         warn(f"'{where}{key}' out of range [{low}, {high}], using {clamped}")
         return clamped
-    return value
+    return number
 
 
 def load_levels(value: Any) -> list[dict[str, int]]:
